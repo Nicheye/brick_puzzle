@@ -12,7 +12,12 @@ services:
         reservations:
           cpus: '0.1'
           memory: 100M
-    command: 'python manage.py runserver 0.0.0.0:8000'
+    command: >
+      sh -c "
+      python manage.py wait_for_db &&
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
     ports:
       - 8000:8000
     volumes:
@@ -30,8 +35,8 @@ services:
       context: .
       dockerfile: backend/DockerFile.python
     command: >
-      sh -c "celery -A acting beat --loglevel=info &&
-             celery -A acting worker --loglevel=info -P eventlet" # Change eventlet to gevent for lighter worker pool
+      sh -c "celery -A prompts beat --loglevel=info &&
+             celery -A prompts worker --loglevel=info -P eventlet" # Change eventlet to gevent for lighter worker pool
     volumes:
       - ./backend:/app/backend
     depends_on:

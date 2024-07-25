@@ -183,4 +183,10 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-AUTH_USER_MODEL =  'authentification.User'
+AUTH_USER_MODEL = 'authentification.User'
+
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
+FORKED_BY_MULTIPROCESSING = 1
+CELERYD_HIJACK_ROOT_LOGGER = False
+CELERYD_LOG_LEVEL = 'DEBUG'
