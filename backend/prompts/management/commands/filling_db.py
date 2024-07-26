@@ -20,16 +20,18 @@ def create_styles():
 def create_color():
     for short_cut, color in COLORS.items():
         try:
-            new_obj = Color.objects.create(color=color)
-            logging.info(f"Created color object: {new_obj}")
+            if Color.objects.all().count() == 0:
+                new_obj = Color.objects.create(color=color)
+                logging.info(f"Created color object: {new_obj}")
         except Exception as e:
             logging.error(f"Error creating color object: {e}")
 
 def create_styles():
     for short_cut, style in STYLES.items():
         try:
-            new_obj = Style.objects.create(style=style)
-            logging.info(f"Created style object: {new_obj}")
+            if Style.objects.all().count() == 0:
+                new_obj = Style.objects.create(style=style)
+                logging.info(f"Created style object: {new_obj}")
         except Exception as e:
             logging.error(f"Error creating style object: {e}")
 
