@@ -1,7 +1,7 @@
 
 from django.urls import path
-from prompts.views import *
+from prompts.views import MainView
 
 urlpatterns = [
-    path('/', ),
+    path('', MainView.as_view()),
 ]
