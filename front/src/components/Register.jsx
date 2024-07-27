@@ -1,18 +1,17 @@
-// front/src/components/Register.jsx
 import React, { useState } from 'react';
 
-const Register = () => {
+const Register = ({ onRegister }) => {
   const [email, setEmail] = useState('');
 
   const submit = async (e) => {
     e.preventDefault();
 
-    await fetch('http://localhost:8000/register/', {
+    await fetch('http://localhost:8000/auth/register/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
-    window.location.href = '/login';
+    onRegister();
   };
 
   return (
