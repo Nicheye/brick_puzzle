@@ -8,3 +8,6 @@ eventlet
 celery
 redis
 pillow
+numpy
+scipy
+python-dotenv

@@ -23,7 +23,7 @@ class MainView(APIView):
                     return Response({'message': f'your brick is #{prompt.position}'})
                 return Response({'message': 'wait for improvement of your image :)'})
             return Response({'message': 'generate your image'})
-    
+
     def post(self, request):
         data = request.data
         user = request.user
@@ -34,7 +34,7 @@ class MainView(APIView):
             ser = PromptSerializer(data=data)
             if ser.is_valid(raise_exception=True):
                 task = generate_image.delay(ser['prompt'], ser['style'], ser['color'])
-                
+
                 ser.save()
             return Response({'message': 'generate your image'})
         return Response({'message': 'Authorize please'})
