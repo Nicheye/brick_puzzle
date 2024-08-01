@@ -43,7 +43,7 @@ ordered_filenames = [filenames[i] for i in col_ind]
 
 # Параметры для сетки
 image_width, image_height = ordered_images[0].size
-grid_width = int(np.sqrt(len(ordered_images)))
+grid_width = 5  # Number of images per row
 grid_height = (len(ordered_images) + grid_width - 1) // grid_width
 
 # Создание пустого изображения для сетки
@@ -110,16 +110,3 @@ for idx, img in enumerate(ordered_images):
 
     # Вставка нового изображения в сетку
     grid_image.paste(new_img, (col * image_width, row * image_height))
-
-# Сохранение и отображение итогового изображения
-grid_image.save('ordered_grid_image_with_titles_on_right.jpg')
-grid_image.show()
-
-
-
-
-
-
-
-
-

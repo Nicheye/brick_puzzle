@@ -1,7 +1,9 @@
 from prompts.celery import app
 import requests
 from prompts.helpers import get_image
+from prompts.models import Prompt
 from dotenv import load_dotenv
+from prompts.scripts import grid_image
 import os
 
 load_dotenv()
@@ -37,4 +39,10 @@ def generate_image(prompt, style, color, user):
         return image
     except Exception as e:
         return str(e)
-    
+
+
+@app.task
+def regenerate_grid():
+    if Prompt.objects.filter(is_approved=True).count()%5 != 0:
+        pass
+    grid_image.save('media/images/grid.jpg')

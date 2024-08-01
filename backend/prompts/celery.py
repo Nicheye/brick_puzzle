@@ -13,9 +13,9 @@ app.autodiscover_tasks()
 FORKED_BY_MULTIPROCESSING = 1
 app.conf.broker_connection_retry_on_startup = True
 
-# app.conf.beat_schedule = {
-#     'run-periodic-task': {
-#         'task': 'acting.tasks.my_periodic_task',
-#         'schedule': crontab(minute='*/5'),  # Run every 5 minutes
-#     },
-# }
+app.conf.beat_schedule = {
+    'run-periodic-task': {
+        'task': 'prompts.tasks.regenerate_grid',
+        'schedule': crontab(minute='*/30'),  # Run every 5 minutes
+    },
+}
