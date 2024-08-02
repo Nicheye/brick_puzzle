@@ -1,5 +1,8 @@
 from prompts.models import Prompt
-from rest_framework.serializers import SerializerMethodField, ModelSerializer
+
+from rest_framework.serializers import SerializerMethodField, ModelSerializer, ValidationError
+
+from profanity_check import predict
 
 
 class PromptSerializer(ModelSerializer):
@@ -10,3 +13,8 @@ class PromptSerializer(ModelSerializer):
 
     def get_created_by(self, obj):
         return obj.created_by.username
+
+    def validate_prompt(self, value):
+        if predict([value])[0]:
+            raise ValidationError('This field contains inappropriate language.')
+        return value

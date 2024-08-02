@@ -23,6 +23,7 @@ def get_image(response, user, token):
     if prompt.count() > 0:
         prompt = prompt.first()
         prompt.image = out_file
+        prompt.is_approved = True
         prompt.save()
         
     return f'{user}.jpg'

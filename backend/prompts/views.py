@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from prompts.models import Prompt
 from prompts.serializers import PromptSerializer
-
 from prompts.tasks import generate_image
 
 
@@ -27,17 +26,19 @@ class MainView(APIView):
             message = 'generate your image'
         return Response({'message': message, 'images': ser.data})
 
+
     def post(self, request):
         data = request.data
         user = request.user
         if user.is_authenticated:
             prompt = Prompt.objects.filter(created_by=user)
             if prompt.count() > 0:
-                return Response({'message': 'you have already done your contribution'})
+                return Response({'message': 'You have already done your contribution'})
+
             ser = PromptSerializer(data=data)
             if ser.is_valid(raise_exception=True):
                 ser.save()
-                task = generate_image.delay(ser['prompt'], ser['style'], ser['color'], user)
+                task = generate_image.delay(ser.validated_data['prompt'], ser.validated_data['style'], ser.validated_data['color'], user.id)
+                return Response({'message': 'Generate your image'})
 
-            return Response({'message': 'generate your image'})
         return Response({'message': 'Authorize please'})
