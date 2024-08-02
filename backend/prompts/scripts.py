@@ -5,7 +5,7 @@ from scipy.spatial.distance import pdist, squareform
 from scipy.optimize import linear_sum_assignment
 
 # Путь к папке с изображениями
-image_folder = 'backend/prompts/media/images'
+image_folder = '/Users/mihailandreevic/Desktop/projects/brick/brick_puzzle/backend/prompts/media/images'
 
 def average_color(image):
     image = image.convert('RGB')

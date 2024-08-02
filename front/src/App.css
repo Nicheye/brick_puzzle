@@ -1,5 +1,7 @@
 html{
 	box-sizing: border-box;
+  background-color: #000;
+  color: #fff;
   }
   *,
   *::after,
@@ -44,4 +46,39 @@ html{
   }
   a{
 	text-decoration: none;
+  }
+  /*header*/
+  .navbar{
+    width: 100%;
+    max-width: 750px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 15px;
+    background: #242424;
+    align-content: center;
+    border-radius: 100px;
+    gap: 10px;
+  }
+  .nav-item{
+    text-align: center;
+    color: #fff;
+    font-size: 40px;
+    width: 25%;
+    padding: 10px;
+    border-radius: 100px;
+    transition: all .25s ;
+  }
+  .nav-item:hover{
+    background: #4F4F4F;
+  }
+  /*login and register forms*/
+  .Auth-form{
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: 200px;
   }

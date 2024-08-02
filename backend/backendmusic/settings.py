@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-f-i**%#j=-ru!9a0e43!28uj%^nqj0qh%=rmpyb1uno!l$e7y_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DOCKER = False
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -79,7 +81,7 @@ WSGI_APPLICATION = 'backendmusic.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-if DEBUG:
+if DOCKER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
