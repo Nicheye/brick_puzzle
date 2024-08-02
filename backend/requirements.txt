@@ -11,4 +11,5 @@ pillow
 numpy
 scipy
 python-dotenv
-profanity-check
+requests
+joblib

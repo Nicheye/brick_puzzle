@@ -13,7 +13,7 @@ const Home = () => {
       (async () =>{
         try{
           const {data} = await axios.get(
-            'http://localhost:8000/auth/home/',{
+            'http://localhost:8000/api/v1/',{
               headers:{
                 'Content-Type':'application/json'
               },
