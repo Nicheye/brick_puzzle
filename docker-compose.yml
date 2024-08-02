@@ -1,5 +1,6 @@
-services:
+version: '3.8'
 
+services:
   backend:
     build:
       context: .
@@ -12,13 +13,6 @@ services:
         reservations:
           cpus: '0.1'
           memory: 100M
-    command: >
-      sh -c "
-      python manage.py wait_for_db &&
-      python manage.py makemigrations &&
-      python manage.py migrate &&
-      python manage.py filling_db &&
-      python manage.py runserver 0.0.0.0:8000"
     ports:
       - 8000:8000
     volumes:
@@ -37,7 +31,7 @@ services:
       dockerfile: backend/DockerFile.python
     command: >
       sh -c "celery -A prompts beat --loglevel=info &&
-             celery -A prompts worker --loglevel=info -P eventlet" # Change eventlet to gevent for lighter worker pool
+             celery -A prompts worker --loglevel=info -P eventlet"
     volumes:
       - ./backend:/app/backend
     depends_on:
@@ -71,3 +65,13 @@ services:
       - ./front:/app/front
     depends_on:
       - backend
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+volumes:
+  backend:
+  front:

@@ -1,52 +1,66 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Register = ({ onRegister }) => {
+const Register = () => {
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
 
-  const submit = async (e) => {
+  const submit = async e => {
     e.preventDefault();
 
+    const user = {
+      email: email
+    };
+
     try {
+      // Register the user
       await fetch('http://localhost:8000/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify(user)
       });
 
-      const response = await axios.post('http://localhost:8000/auth/login/', {
-        email,
-      }, {
+      // Auto-login the user
+      const config = {
         headers: {
           'Content-Type': 'application/json'
         },
         withCredentials: true
-      });
+      };
 
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-      
-    
-    } catch (err) {
-      setError('Invalid credentials');
+      const { data } = await axios.post('http://localhost:8000/auth/login/', user, config);
+      localStorage.clear();
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data['access']}`;
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Registration or login failed', error);
     }
   };
 
   return (
-    <form onSubmit={submit}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button type="submit">Register</button>
-    </form>
+    <div className="Auth-form-container">
+      <form className="Auth-form" onSubmit={submit}>
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">Sign Up</h3>
+          <div className="form-group mt-3">
+            <label>Email</label>
+            <input
+              name='email'
+              type="email"
+              className="form-control mt-1"
+              placeholder="Enter email"
+              value={email}
+              required
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="d-grid gap-2 mt-3">
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 };
 
