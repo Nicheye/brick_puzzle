@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
 import axios from 'axios'
+
 const Home = () => {
   const [message,setMessage] = useState('');
 
@@ -13,7 +14,7 @@ const Home = () => {
       (async () =>{
         try{
           const {data} = await axios.get(
-            'http://localhost:8000/home/',{
+            'http://localhost:8000/api/v1/',{
               headers:{
                 'Content-Type':'application/json'
               },
@@ -30,6 +31,7 @@ const Home = () => {
   return (
     <div className="form-signin mt-5 text-center">
     <h3>Hi {message}</h3>
+    
   </div>
   )
 }

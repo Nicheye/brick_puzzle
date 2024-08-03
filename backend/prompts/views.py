@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 from prompts.models import Prompt
 from prompts.serializers import PromptSerializer
@@ -9,8 +9,8 @@ from prompts.tasks import generate_image
 
 
 class MainView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
-
+    permission_classes = [IsAuthenticated, ]
+    
     def get(self, request):
         user = request.user
         queryset = Prompt.objects.all()
@@ -24,8 +24,7 @@ class MainView(APIView):
                     message = f'your brick is #{prompt.position}'
                 message = 'wait for improvement of your image :)'
             message = 'generate your image'
-        return Response({'message': message, 'images': ser.data})
-
+        return Response({'message': {message}, 'images': ser.data})
 
     def post(self, request):
         data = request.data

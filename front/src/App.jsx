@@ -7,7 +7,6 @@ import Login from "./components/Login";
 import Home from './components/Home1';
 import Logout from './components/Logout';
 import Navigate from './components/Navigate'
-import Register from './components/Register'
 function App() {
  
 
@@ -18,7 +17,6 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
-          <Route path="/register" element={<Register/>}/>
         </Routes>
       </BrowserRouter>
   

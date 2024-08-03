@@ -76,9 +76,20 @@ html{
     background: #4F4F4F;
   }
   /*login and register forms*/
-  .Auth-form{
+  .auth_form{
     width: 100%;
-    max-width: 900px;
+    max-width: 600px;
     margin: 0 auto;
+    height: 300px;
     margin-top: 200px;
   }
+  .auth_form_form{
+    position: relative;
+    margin-top: 40px
+  }
+  .submit-btn{
+    
+    width: 100%;
+    margin-top: 10px;
+  }
+  

@@ -15,11 +15,8 @@ const Navigate = () => {
 
       <div class="navbar">
         
-        {isAuth ? <Link to="/" className='nav-item'>Home</Link> : null}
-        {isAuth ? <Link to="/logout" className='nav-item'>Logout</Link> : <Link to="/login" className='nav-item'>Login</Link>}
-        <img src={logo} alt="logo" className="logo" />
-        {isAuth ? '.' : <Link to="/register" className='nav-item'> Register</Link>}
-                  
+      <img src={logo} alt="logo" className="logo" />
+        {isAuth ? <Link to="/logout" className='nav-item'>Logout</Link> : <Link to="/login" className='nav-item'>Login</Link>}          
       </div>
   </>       
   )
