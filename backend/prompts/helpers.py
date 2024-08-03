@@ -2,28 +2,47 @@ import requests
 import shutil
 from prompts.models import Prompt
 from prompts.scripts import grid_image
+from authentification.models import User
 
 def get_image(response, user, token):
-    content = str(response['message']['content'])
+    if not response or 'choices' not in response or not response['choices']:
+        print("Invalid response format")
+        return None
+
+    # Navigate to the message content within the choices list
+    content = response['choices'][0]['message']['content']
     start = content.find('src=\"') + len('src=\"')
     finish = content.find('\"', start)
+    if start == -1 or finish == -1:
+        print("Could not find image URL in response content")
+        return None
+
     id = content[start:finish]
+    print(f"Image ID: {id}")
     url = f"https://gigachat.devices.sberbank.ru/api/v1/files/{id}/content"
     headers = {
         'Accept': 'application/jpg',
         'Authorization': f'Bearer {token}'
     }
-    response = requests.request("GET", url, headers=headers, stream=True)
+    response = requests.request("GET", url, headers=headers, stream=True, verify=False)
+    print(response)
+    if response.status_code != 200:
+        print(f"Error: Received status code {response.status_code} when fetching the image")
+        return None
 
-    with open(f'media/images/{user}.jpg', 'wb') as out_file:
+    image_path = f'backend/media/media/images/{user}.jpg'
+    with open(image_path, 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
 
-    del response
-    prompt = Prompt.objects.filter(created_by__username=user)
+    print(f"Saved image to {image_path}")
+    print(f"user! {user}")
+    prompt = Prompt.objects.filter(created_by=User.objects.get(id=int(user)))
+    print(prompt.count())
     if prompt.count() > 0:
         prompt = prompt.first()
-        prompt.image = out_file
+        prompt.position = Prompt.objects.filter(is_approved=True).count() + 1
+        prompt.image = image_path  # Update to store the image path
         prompt.is_approved = True
         prompt.save()
-        
+
     return f'{user}.jpg'

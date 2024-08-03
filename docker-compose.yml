@@ -53,25 +53,7 @@ services:
       dockerfile: front/Dockerfile.node
     ports:
       - "5173:5173"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 200M
-        reservations:
-          cpus: '0.1'
-          memory: 100M
     volumes:
       - ./front:/app/front
     depends_on:
       - backend
-
-  watchtower:
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: always
-
-volumes:
-  backend:
-  front:

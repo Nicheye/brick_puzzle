@@ -3,14 +3,21 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from prompts.models import Prompt
+from prompts.models import Prompt, Style, Color
 from prompts.serializers import PromptSerializer
 from prompts.tasks import generate_image
 
 
 class MainView(APIView):
     permission_classes = [IsAuthenticated, ]
-    
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({
+            'request': self.request
+        })
+        return context
+
     def get(self, request):
         user = request.user
         queryset = Prompt.objects.all()
@@ -36,8 +43,11 @@ class MainView(APIView):
 
             ser = PromptSerializer(data=data)
             if ser.is_valid(raise_exception=True):
-                ser.save()
-                task = generate_image.delay(ser.validated_data['prompt'], ser.validated_data['style'], ser.validated_data['color'], user.id)
+                style = Style.objects.filter(style=data['style']).first()
+                color = Color.objects.filter(color=data['color']).first()
+                ser.save(style=style, color=color, created_by=user)
+                task = generate_image(data['prompt'], data['style'], data['color'], user.id)
+                print(task)
                 return Response({'message': 'Generate your image'})
 
         return Response({'message': 'Authorize please'})

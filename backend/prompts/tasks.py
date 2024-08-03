@@ -5,13 +5,36 @@ from prompts.models import Prompt
 from dotenv import load_dotenv
 from prompts.scripts import grid_image
 import os
-
+import warnings
 load_dotenv()
 
 
-@app.task
+def get_access_token():
+    warnings.filterwarnings('ignore', message='Unverified HTTPS request')
+
+    oauth_url = "https://ngw.devices.sberbank.ru:9443/api/v2/oauth"
+    oauth_payload = {'scope': 'GIGACHAT_API_PERS'}
+    oauth_headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'RqUID': 'eb1c7911-998f-4720-91d8-e5177c943f5d',
+        'Authorization': 'Basic ZWIxYzc5MTEtOTk4Zi00NzIwLTkxZDgtZTUxNzdjOTQzZjVkOmEyYzI5MzZkLTVkMjgtNDI0ZC1iMWE2LTJiMTRjOTk4YjA1Nw=='
+    }
+
+    oauth_response = requests.post(oauth_url, headers=oauth_headers, data=oauth_payload, verify=False)
+    oauth_response.raise_for_status()
+
+    access_token = oauth_response.json().get('access_token')
+
+    if not access_token:
+        raise ValueError('Access token not found in the response')
+
+    return access_token
+
+
 def generate_image(prompt, style, color, user):
-    api_key = os.getenv('SBER_KEY')
+    api_key = get_access_token()
+    
     try:
         url = 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions'
         headers = {
@@ -34,11 +57,18 @@ def generate_image(prompt, style, color, user):
             "function_call": "auto"
         }
 
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data, verify=False)
+        if response.status_code != 200:
+            print(f"Error: Received status code {response.status_code}")
+            print(response.text)
+            return None
+        print(response.json())
         image = get_image(response.json(), user, api_key)
         return image
+       
     except Exception as e:
-        return str(e)
+        print(str(e))
+        return None
 
 
 @app.task
