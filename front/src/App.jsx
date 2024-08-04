@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Home from './components/Home1';
 import Logout from './components/Logout';
 import Navigate from './components/Navigate'
+import CommonPicture from './components/CommonPicture'
 function App() {
  
 
@@ -15,6 +16,7 @@ function App() {
         <Navigate/>
         <Routes>
           <Route path="/" element={<Home/>}/>
+          <Route path="/pic" element={<CommonPicture/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
         </Routes>

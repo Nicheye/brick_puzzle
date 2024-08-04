@@ -48,7 +48,7 @@ html{
 	text-decoration: none;
   }
   /*header*/
-  .navbar{
+  .navbar {
     width: 100%;
     max-width: 750px;
     display: flex;
@@ -62,19 +62,55 @@ html{
     align-content: center;
     border-radius: 100px;
     gap: 10px;
-  }
-  .nav-item{
+}
+
+.nav-item {
     text-align: center;
     color: #fff;
     font-size: 40px;
-    width: 25%;
+    flex: 1 1 25%; /* Allows items to grow and shrink, with an initial size of 25% */
     padding: 10px;
     border-radius: 100px;
-    transition: all .25s ;
-  }
-  .nav-item:hover{
+    transition: all .25s;
+}
+
+.nav-item:hover {
     background: #4F4F4F;
-  }
+}
+
+/* Media Queries for Responsiveness */
+
+/* Larger screens (default settings) */
+@media (min-width: 750px) {
+    .nav-item {
+        font-size: 40px;
+    }
+}
+
+/* Medium screens */
+@media (max-width: 749px) {
+    .nav-item {
+        font-size: 30px;
+        flex: 1 1 33%; /* Adjust to 3 items per row */
+    }
+}
+
+/* Small screens */
+@media (max-width: 500px) {
+    .nav-item {
+        font-size: 20px;
+        flex: 1 1 50%; /* Adjust to 2 items per row */
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 350px) {
+    .nav-item {
+        font-size: 16px;
+        flex: 1 1 100%; /* Adjust to 1 item per row */
+    }
+}
+
   /*login and register forms*/
   .auth_form{
     width: 100%;
