@@ -2,9 +2,9 @@ from prompts.celery import app
 import requests
 from prompts.helpers import get_image
 from prompts.models import Prompt
+from prompts.helpers import get_most_popular_color, get_most_popular_style
 from dotenv import load_dotenv
-from prompts.scripts import grid_image
-import os
+from prompts.scripts import grid_image, summarize_text
 import warnings
 load_dotenv()
 
@@ -31,10 +31,10 @@ def get_access_token():
 
     return access_token
 
-
-def generate_image(prompt, style, color, user):
+@app.task
+def generate_image(prompt, style, color, user, is_common=False):
     api_key = get_access_token()
-    
+
     try:
         url = 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions'
         headers = {
@@ -63,9 +63,9 @@ def generate_image(prompt, style, color, user):
             print(response.text)
             return None
         print(response.json())
-        image = get_image(response.json(), user, api_key)
+        image = get_image(response.json(), user, api_key, is_common)
         return image
-       
+
     except Exception as e:
         print(str(e))
         return None
@@ -73,6 +73,17 @@ def generate_image(prompt, style, color, user):
 
 @app.task
 def regenerate_grid():
-    if Prompt.objects.filter(is_approved=True).count()%5 != 0:
+    if Prompt.objects.filter(is_approved=True).count() % 5 != 0:
         pass
     grid_image.save('media/images/grid.jpg')
+
+
+@app.task
+def generate_common_image():
+    all_text = ''
+    for prompt in Prompt.objects.all():
+        all_text += prompt.prompt
+    summary = summarize_text(all_text)
+    color = get_most_popular_color()
+    style = get_most_popular_style()
+    generate_image(summary, style, color, 1, True)

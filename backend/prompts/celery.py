@@ -18,4 +18,8 @@ app.conf.beat_schedule = {
         'task': 'prompts.tasks.regenerate_grid',
         'schedule': crontab(minute='*/30'),  # Run every 5 minutes
     },
+    'common-pic-task': {
+        'task': 'prompts.tasks.generate_common_image',
+        'schedule': crontab(hour='*/168'),  # Run every day at 1:00 AM
+    },
 }

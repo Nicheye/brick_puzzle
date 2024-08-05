@@ -13,3 +13,4 @@ scipy
 python-dotenv
 requests
 joblib
+nltk==3.8.1

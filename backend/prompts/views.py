@@ -46,7 +46,7 @@ class MainView(APIView):
                 style = Style.objects.filter(style=data['style']).first()
                 color = Color.objects.filter(color=data['color']).first()
                 ser.save(style=style, color=color, created_by=user)
-                task = generate_image(data['prompt'], data['style'], data['color'], user.id)
+                task = generate_image.task(data['prompt'], data['style'], data['color'], user.id)
                 print(task)
                 return Response({'message': 'Generate your image'})
 

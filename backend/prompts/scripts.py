@@ -3,15 +3,22 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from scipy.spatial.distance import pdist, squareform
 from scipy.optimize import linear_sum_assignment
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.probability import FreqDist
+from heapq import nlargest
 
 # Путь к папке с изображениями
-image_folder = 'backend/media/media/images'
+image_folder = 'D:/brick/brick_puzzle/backend/media/media/images'
+
 
 def average_color(image):
     image = image.convert('RGB')
     img_array = np.array(image)
     avg_color = img_array.mean(axis=(0, 1))
     return avg_color
+
 
 # Чтение изображений из папки
 images = []
@@ -55,6 +62,7 @@ try:
 except IOError:
     font = ImageFont.load_default()
 
+
 # Функция для создания закругленного фона
 def create_rounded_rectangle(width, height, radius, color):
     mask = Image.new('L', (width, height), 0)
@@ -69,6 +77,7 @@ def create_rounded_rectangle(width, height, radius, color):
     rounded_background.putalpha(mask)
     return rounded_background
 
+
 # Расположение изображений в сетке с заголовками
 for idx, img in enumerate(ordered_images):
     row = idx // grid_width
@@ -78,7 +87,7 @@ for idx, img in enumerate(ordered_images):
     new_img = img.copy()
     draw = ImageDraw.Draw(new_img)
     text = ordered_filenames[idx]
-    
+
     # Получение размеров текста
     text_bbox = draw.textbbox((0, 0), text, font=font)
     text_width = text_bbox[2] - text_bbox[0]
@@ -89,7 +98,7 @@ for idx, img in enumerate(ordered_images):
     padding = 5
     text_background_height = text_height + 2 * padding
     text_background = create_rounded_rectangle(background_width, text_background_height, 10, (0, 0, 0))  # Черный фон с закругленными углами
-    
+
     # Пересчитать текстовые размеры с учетом нового фона
     text_x = padding
     text_y = padding
@@ -110,3 +119,41 @@ for idx, img in enumerate(ordered_images):
 
     # Вставка нового изображения в сетку
     grid_image.paste(new_img, (col * image_width, row * image_height))
+
+
+nltk.download('punkt')
+nltk.download('stopwords')
+
+
+def summarize_text(text, max_length=1024):
+    # Разбиваем текст на предложения
+    sentences = sent_tokenize(text)
+    # Разбиваем текст на слова
+    words = word_tokenize(text.lower())
+
+    # Удаляем стоп-слова
+    stop_words = set(stopwords.words('english'))
+    filtered_words = [word for word in words if word.isalnum() and word not in stop_words]
+
+    # Создаем частотный словарь
+    freq_dist = FreqDist(filtered_words)
+
+    # Сортируем предложения по важности
+    sentence_scores = {}
+    for sentence in sentences:
+        for word in word_tokenize(sentence.lower()):
+            if word in freq_dist:
+                if sentence not in sentence_scores:
+                    sentence_scores[sentence] = freq_dist[word]
+                else:
+                    sentence_scores[sentence] += freq_dist[word]
+
+    # Выбираем самые важные предложения
+    summary_sentences = nlargest(len(sentences), sentence_scores, key=sentence_scores.get)
+    summary = ' '.join(summary_sentences)
+
+    # Обрезаем результат до 1024 символов, если необходимо
+    if len(summary) > max_length:
+        summary = summary[:max_length].rsplit(' ', 1)[0] + '...'
+
+    return summary
