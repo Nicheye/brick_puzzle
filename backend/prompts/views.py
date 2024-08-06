@@ -25,11 +25,18 @@ class MainView(APIView):
         message = 'authenticate please'
         if user.is_authenticated:
             prompt = Prompt.objects.filter(created_by=user)
-            if prompt.count() > 0:
+            if prompt.count() == 1:
                 prompt = prompt.first()
                 if prompt.is_approved:
                     message = f'your brick is #{prompt.position}'
-                message = 'wait for improvement of your image :)'
+                else:
+                    message = 'wait for improvement of your image :)'
+            elif prompt.count() > 0:
+                ids = ''
+                for prom in prompt:
+                    ids += f' #{prom.position}'
+                message = f'your brick are on {ids} positions'
+
             message = 'generate your image'
         return Response({'message': {message}, 'images': ser.data})
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import land_img from '../assets/land_img.png'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -53,10 +54,18 @@ const Login = () => {
   };
 
   return (
+    <>
+    <div className="p-3">
+    <div class="flex items-center justify-center mt-10">
+        <img class="h-auto max-w-full rounded-lg" src={land_img} alt="image description"/>
+    </div>
+
+
     <div href="#" className="block max-w-sm p-6 bg-black border border-gray-800 rounded-lg shadow hover:bg-gray-900 auth_form">
       <h1 className="mb-4 text-2xl font-bold leading-snug tracking-tight text-gray-100 md:text-3xl lg:text-4xl">
         Contribute <mark className="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">your part</mark> into collective art
       </h1>
+      <h5 class="text-xl font-bold dark:text-white">Login or Register</h5>
       <form className="max-w-sm mx-auto auth_form_form" onSubmit={submit}>
         <label htmlFor="email-address-icon" className="block mb-2 text-sm font-medium text-gray-100">Your Email</label>
         <div className="relative">
@@ -71,6 +80,8 @@ const Login = () => {
         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-ml px-5 py-2.5 text-center mb-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 submit-btn">submit</button>
       </form>
     </div>
+    </div>
+    </>
   );
 };
 
