@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import land_img from '../assets/land_img.png'
-
+import Developer from './Developer';
 const Login = () => {
   const [email, setEmail] = useState('');
 
@@ -80,6 +80,7 @@ const Login = () => {
         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-ml px-5 py-2.5 text-center mb-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 submit-btn">submit</button>
       </form>
     </div>
+    <Developer/>
     </div>
     </>
   );

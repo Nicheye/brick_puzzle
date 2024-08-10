@@ -6,19 +6,21 @@ from prompts.helpers import get_most_popular_color, get_most_popular_style
 from dotenv import load_dotenv
 from prompts.scripts import grid_image, summarize_text
 import warnings
-load_dotenv()
+import os
+
+load_dotenv('backend/backendmusic/.env')
 
 
 def get_access_token():
     warnings.filterwarnings('ignore', message='Unverified HTTPS request')
-
+    api_key = os.getenv('SBER_AUTH', None)
     oauth_url = "https://ngw.devices.sberbank.ru:9443/api/v2/oauth"
     oauth_payload = {'scope': 'GIGACHAT_API_PERS'}
     oauth_headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
         'RqUID': 'eb1c7911-998f-4720-91d8-e5177c943f5d',
-        'Authorization': 'Basic ZWIxYzc5MTEtOTk4Zi00NzIwLTkxZDgtZTUxNzdjOTQzZjVkOmEyYzI5MzZkLTVkMjgtNDI0ZC1iMWE2LTJiMTRjOTk4YjA1Nw=='
+        'Authorization': f'Basic {api_key}'
     }
 
     oauth_response = requests.post(oauth_url, headers=oauth_headers, data=oauth_payload, verify=False)
@@ -30,6 +32,7 @@ def get_access_token():
         raise ValueError('Access token not found in the response')
 
     return access_token
+
 
 @app.task
 def generate_image(prompt, style, color, user, is_common=False):
@@ -64,6 +67,7 @@ def generate_image(prompt, style, color, user, is_common=False):
             return None
         print(response.json())
         image = get_image(response.json(), user, api_key, is_common)
+
         return image
 
     except Exception as e:
@@ -75,7 +79,7 @@ def generate_image(prompt, style, color, user, is_common=False):
 def regenerate_grid():
     if Prompt.objects.filter(is_approved=True).count() % 5 != 0:
         pass
-    grid_image.save('media/images/grid.jpg')
+    grid_image.save('backend/media/media/images/grid.jpg')
 
 
 @app.task

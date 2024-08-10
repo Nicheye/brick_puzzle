@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont
 from scipy.spatial.distance import pdist, squareform
 from scipy.optimize import linear_sum_assignment
 import nltk
@@ -10,7 +10,7 @@ from nltk.probability import FreqDist
 from heapq import nlargest
 
 # Путь к папке с изображениями
-image_folder = 'D:/brick/brick_puzzle/backend/media/media/images'
+image_folder = 'backend/media/media/images'
 
 
 def average_color(image):

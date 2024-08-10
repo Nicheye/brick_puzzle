@@ -1,16 +1,14 @@
-import logging
+
 from prompts.constances.colors import COLORS
 from prompts.constances.styles import STYLES
 from prompts.models import Style, Color
-import time
-from django.db import connections
-from django.db.utils import OperationalError
 from django.core.management import BaseCommand
 
 
 def create_color():
     Color.objects.bulk_create([Color(color=short_cut) for short_cut, color in COLORS.items()])
     return len(COLORS)
+
 
 def create_styles():
     Style.objects.bulk_create([Style(style=short_cut) for short_cut, style in STYLES.items()])

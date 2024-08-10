@@ -4,7 +4,6 @@ from prompts.models import Prompt, Style, Color
 from django.db.models import Count
 from prompts.constances.colors import COLORS
 from prompts.constances.styles import STYLES
-from prompts.scripts import grid_image
 from authentification.models import User
 
 

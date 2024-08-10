@@ -1,6 +1,6 @@
 from prompts.models import Prompt
 
-from rest_framework.serializers import SerializerMethodField, ModelSerializer, ValidationError
+from rest_framework.serializers import SerializerMethodField, ModelSerializer
 
 
 class PromptSerializer(ModelSerializer):
@@ -8,6 +8,7 @@ class PromptSerializer(ModelSerializer):
     image = SerializerMethodField()
     style = SerializerMethodField()
     color = SerializerMethodField()
+
     class Meta:
         model = Prompt
         fields = ['prompt', 'style', 'color', 'position', 'is_approved', 'created_by', 'created_at', 'image']

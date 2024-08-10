@@ -1,7 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import logo from '../assets/logo.svg'
 import {Link} from 'react-router-dom'
-
 const Navigate = () => {
 	const [isAuth,setIsAuth] = useState(false)
 	useEffect(() => {
@@ -15,9 +14,10 @@ const Navigate = () => {
 
       <div class="navbar">
       <Link to="/pic" className='nav-item'>Pic</Link>
-      <img src={logo} alt="logo" className="logo nav-item" />
+      <Link to="/"><img src={logo} alt="logo" className="logo nav-item" /></Link>
         {isAuth ? <Link to="/logout" className='nav-item'>Logout</Link> : <Link to="/login" className='nav-item'>Login</Link>}          
       </div>
+  
   </>       
   )
 }

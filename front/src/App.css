@@ -146,3 +146,13 @@ html{
   height: 10px;
   border-radius: 50%;
 }
+.main_grid_img{
+  width: 400px;
+  height: 400px;
+}
+.developer-wrapper{
+  max-width: 900px;
+  padding: 5px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
