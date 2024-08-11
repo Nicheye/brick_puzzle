@@ -27,7 +27,7 @@ const ShareComponent = () => {
 
       window.open(shareUrl, '_blank');
 
-      await axios.get('http://localhost:8000/api/v1/share', {
+      await axios.get('http://62.113.100.157:8000/api/v1/share', {
         headers: {
           'Content-Type': 'application/json'
         },

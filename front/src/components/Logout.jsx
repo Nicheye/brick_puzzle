@@ -11,7 +11,7 @@ const Logout = () => {
             },
             withCredentials: true
             };
-          const {data} = await axios.post('http://localhost:8000/auth/logout/',{
+          const {data} = await axios.post('http://62.113.100.157:8000/auth/logout/',{
             refresh_token: localStorage.getItem('refresh_token'),
             access_token: localStorage.getItem('access_token')
           },config);

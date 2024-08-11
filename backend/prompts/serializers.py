@@ -18,7 +18,7 @@ class PromptSerializer(ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return f'http://127.0.0.1:8000/media/media/images/{obj.created_by.id}.jpg'
+            return f'http://62.113.100.157:8000/media/media/images/{obj.created_by.id}.jpg'
         return None
 
     def get_style(self, obj):
