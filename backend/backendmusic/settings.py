@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f-i**%#j=-ru!9a0e43!28uj%^nqj0qh%=rmpyb1uno!l$e7y_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-DOCKER = False
+DOCKER = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -202,4 +202,4 @@ CORS_ALLOW_ALL_ORIGINS = True
 if DEBUG:
     BASE_URL = 'http://127.0.0.1:8000/'
 else:
-    BASE_URL = 'http://127.0.0.1:8000/'
+    BASE_URL = 'http://62.113.100.157:8000/'
