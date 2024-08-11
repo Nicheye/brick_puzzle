@@ -15,6 +15,8 @@ services:
           memory: 100M
     ports:
       - 8000:8000
+    volumes:
+      - ./backend:/app/backend
     depends_on:
       - db
       - redis
@@ -30,6 +32,8 @@ services:
     command: >
       sh -c "celery -A prompts beat --loglevel=info &&
              celery -A prompts worker --loglevel=info -P eventlet"
+    volumes:
+      - ./backend:/app/backend
     depends_on:
       - backend
       - redis
@@ -49,9 +53,7 @@ services:
       dockerfile: front/Dockerfile.node
     ports:
       - "5173:5173"
+    volumes:
+      - ./front:/app/front
     depends_on:
       - backend
-
-networks:
-  default:
-    name: my_custom_network
