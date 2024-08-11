@@ -6,7 +6,7 @@ const ShareComponent = () => {
 
   const handleShare = async (platform) => {
     try {
-      const url = 'http://localhost:5173/';
+      const url = 'http://62.113.100.157:8000/';
       const message = 'Create Your Image and contribute into Collective Art';
       let shareUrl = '';
 
