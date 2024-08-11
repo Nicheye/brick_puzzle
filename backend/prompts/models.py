@@ -17,7 +17,7 @@ class Prompt(models.Model):
     style = models.ForeignKey(Style, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     position = models.IntegerField(null=True)
-    image = models.ImageField(upload_to=f'{MEDIA_ROOT}/images')
+    image = models.ImageField(upload_to=f'{MEDIA_ROOT}images')
     is_approved = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
