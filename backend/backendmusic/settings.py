@@ -195,7 +195,7 @@ CELERYD_HIJACK_ROOT_LOGGER = False
 CELERYD_LOG_LEVEL = 'DEBUG'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = 'backend/media'
 
 CORS_ALLOW_ALL_ORIGINS = True
 

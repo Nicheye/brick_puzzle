@@ -2,7 +2,6 @@ from django.db import models
 from authentification.models import User
 from prompts.constances.styles import STYLES
 from prompts.constances.colors import COLORS
-from backendmusic.settings import MEDIA_ROOT
 
 class Style(models.Model):
     style = models.CharField(max_length=30, choices=STYLES, default='Gothic')
@@ -17,7 +16,7 @@ class Prompt(models.Model):
     style = models.ForeignKey(Style, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     position = models.IntegerField(null=True)
-    image = models.ImageField(upload_to=f'{MEDIA_ROOT}images')
+    image = models.ImageField(upload_to=f'backend/media/images')
     is_approved = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
