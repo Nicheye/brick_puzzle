@@ -10,7 +10,7 @@ from nltk.probability import FreqDist
 from heapq import nlargest
 
 # Путь к папке с изображениями
-image_folder = 'C:/Users/misha/brick_puzzle/brick_puzzle/backend/media/media/images'
+image_folder = 'backend/media/media/images'
 
 
 def average_color(image):
