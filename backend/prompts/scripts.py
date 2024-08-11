@@ -8,9 +8,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.probability import FreqDist
 from heapq import nlargest
+from backendmusic.settings import MEDIA_ROOT
 
 # Путь к папке с изображениями
-image_folder = 'backend/media/media/images'
+image_folder = f'{MEDIA_ROOT}/images'
 
 
 def average_color(image):

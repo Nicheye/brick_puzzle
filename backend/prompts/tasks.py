@@ -6,6 +6,7 @@ from prompts.helpers import get_most_popular_color, get_most_popular_style
 from dotenv import load_dotenv
 from prompts.scripts import grid_image, summarize_text
 import warnings
+from backendmusic.settings import MEDIA_ROOT
 import os
 
 load_dotenv('backend/backendmusic/.env')
@@ -79,7 +80,7 @@ def generate_image(prompt, style, color, user, is_common=False):
 def regenerate_grid():
     if Prompt.objects.filter(is_approved=True).count() % 5 != 0:
         pass
-    grid_image.save('backend/media/media/images/grid.jpg')
+    grid_image.save(f'{MEDIA_ROOT}/images/grid.jpg')
 
 
 @app.task

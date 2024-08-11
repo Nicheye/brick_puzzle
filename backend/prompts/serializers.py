@@ -2,6 +2,7 @@ from prompts.models import Prompt
 
 from rest_framework.serializers import SerializerMethodField, ModelSerializer
 
+from backendmusic.settings import MEDIA_URL
 
 class PromptSerializer(ModelSerializer):
     created_by = SerializerMethodField()
@@ -18,7 +19,7 @@ class PromptSerializer(ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return f'http://62.113.100.157:8000/media/media/images/{obj.created_by.id}.jpg'
+            return f'{MEDIA_URL}images/{obj.created_by.id}.jpg'
         return None
 
     def get_style(self, obj):

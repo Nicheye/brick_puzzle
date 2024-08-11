@@ -5,7 +5,7 @@ from django.db.models import Count
 from prompts.constances.colors import COLORS
 from prompts.constances.styles import STYLES
 from authentification.models import User
-
+from backendmusic.settings import MEDIA_ROOT
 
 def get_image(response, user, token, is_common=False):
     if not response or 'choices' not in response or not response['choices']:
@@ -33,7 +33,7 @@ def get_image(response, user, token, is_common=False):
         print(f"Error: Received status code {response.status_code} when fetching the image")
         return None
     if is_common is False:
-        image_path = f'backend/media/media/images/{user}.jpg'
+        image_path = f'{MEDIA_ROOT}/images/{user}.jpg'
         with open(image_path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
 
@@ -50,7 +50,7 @@ def get_image(response, user, token, is_common=False):
 
         return f'{user}.jpg'
     else:
-        image_path = 'backend/media/media/images/common_pic.jpg'
+        image_path = F'{MEDIA_ROOT}/images/common_pic.jpg'
         with open(image_path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         return f'{image_path}'
