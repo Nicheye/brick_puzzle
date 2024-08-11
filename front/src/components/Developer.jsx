@@ -2,7 +2,7 @@ import React from 'react';
 
 const Developer = () => {
   return (
-    <div className="developer-wrapper bg-lime-400 p-4 rounded-full mt-5">
+    <div className="developer-wrapper bg-lime-400 p-4 rounded-full ">
       <h5 className="text-center mb-4 text-base font-medium leading-tight text-gray-800 md:text-lg lg:text-lg dark:text-gray-300">
         Website was developed by{' '}
         <a

@@ -20,7 +20,7 @@ const Login = () => {
     };
 
     try {
-      const { data } = await axios.post('http://62.113.100.157:8000/auth/login/', user, config);
+      const { data } = await axios.post('http://localhost:8000/auth/login/', user, config);
       localStorage.clear();
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
@@ -30,14 +30,14 @@ const Login = () => {
       console.error('Login failed:', error.response ? error.response.data : error.message);
       
       try {
-        const registerResponse = await fetch('http://62.113.100.157:8000/auth/register/', {
+        const registerResponse = await fetch('http://localhost:8000/auth/register/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user)
         });
 
         if (registerResponse.ok) {
-          const { data } = await axios.post('http://62.113.100.157:8000/auth/login/', user, config);
+          const { data } = await axios.post('http://localhost:8000/auth/login/', user, config);
           localStorage.clear();
           localStorage.setItem('access_token', data.access);
           localStorage.setItem('refresh_token', data.refresh);

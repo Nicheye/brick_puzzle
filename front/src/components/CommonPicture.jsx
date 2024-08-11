@@ -14,7 +14,7 @@ const CommonPicture = () => {
         } else {
             (async () => {
                 try {
-                    const { data } = await axios.get('http://62.113.100.157:8000/api/v1/pic', {
+                    const { data } = await axios.get('http://localhost:8000/api/v1/pic', {
                         headers: { 'Content-Type': 'application/json' },
                         withCredentials: true,
                     });

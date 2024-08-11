@@ -59,7 +59,7 @@ const PromptForm = () => {
     };
 
     try {
-      const { data } = await axios.post('http://62.113.100.157:8000/api/v1/', payload, config);
+      const { data } = await axios.post('http://localhost:8000/api/v1/', payload, config);
       console.log('Response:', data); // Log response for debugging
     } catch (error) {
       console.error('Request failed:', error.response ? error.response.data : error.message);
