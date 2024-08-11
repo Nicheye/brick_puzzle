@@ -15,35 +15,50 @@ services:
           memory: 100M
     ports:
       - 8000:8000
-    volumes:
-      - ./backend:/app/backend
     depends_on:
       - db
       - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - REDIS_URL=redis://redis:6379/0
 
   redis:
-    image: redis
-
-  celery:
+    image: redis:6-alpine
     restart: always
+
+  celery-worker:
     build:
       context: .
       dockerfile: backend/DockerFile.python
-    command: >
-      sh -c "celery -A prompts beat --loglevel=info &&
-             celery -A prompts worker --loglevel=info -P eventlet"
-    volumes:
-      - ./backend:/app/backend
+    command: celery -A prompts worker --loglevel=info -P eventlet
     depends_on:
       - backend
       - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - REDIS_URL=redis://redis:6379/0
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: backend/DockerFile.python
+    command: celery -A prompts beat --loglevel=info
+    depends_on:
+      - backend
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - REDIS_URL=redis://redis:6379/0
   
   db:
-    image: postgres
+    image: postgres:13-alpine
+    restart: always
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -52,8 +67,16 @@ services:
       context: .
       dockerfile: front/Dockerfile.node
     ports:
-      - "5173:5173"
-    volumes:
-      - ./front:/app/front
+      - "80:80"
     depends_on:
       - backend
+    environment:
+      - API_URL=http://backend:8000/api
+
+volumes:
+  db_data:
+
+networks:
+  default:
+    external:
+      name: my_custom_network
