@@ -62,7 +62,7 @@ class MainView(APIView):
                 color = Color.objects.filter(color=data['color']).first()
                 ser.save(style=style, color=color, created_by=user)
 
-                task = generate_image.task(data['prompt'], data['style'], data['color'], user.id)
+                task = generate_image.delay(data['prompt'], data['style'], data['color'], user.id)
                 print(task)
 
                 user.can_add = False

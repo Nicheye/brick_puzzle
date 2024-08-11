@@ -1,4 +1,4 @@
-from prompts.celery import app
+from celery import shared_task
 import requests
 from prompts.helpers import get_image
 from prompts.models import Prompt
@@ -35,7 +35,7 @@ def get_access_token():
     return access_token
 
 
-@app.task
+@shared_task(bind=True, max_retries=3)
 def generate_image(prompt, style, color, user, is_common=False):
     api_key = get_access_token()
 
@@ -76,14 +76,14 @@ def generate_image(prompt, style, color, user, is_common=False):
         return None
 
 
-@app.task
+@shared_task(bind=True, max_retries=3)
 def regenerate_grid():
     if Prompt.objects.filter(is_approved=True).count() % 5 != 0:
         pass
     grid_image.save(f'{MEDIA_ROOT}/images/grid.jpg')
 
 
-@app.task
+@shared_task(bind=True, max_retries=3)
 def generate_common_image():
     all_text = ''
     for prompt in Prompt.objects.all():
@@ -91,4 +91,4 @@ def generate_common_image():
     summary = summarize_text(all_text)
     color = get_most_popular_color()
     style = get_most_popular_style()
-    generate_image(summary, style, color, 1, True)
+    generate_image.delay(summary, style, color, 1, True)
