@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Developer from './Developer';
+import Leaderboard from './LeaderBoard';
 const CommonPicture = () => {
     const [common_pic, setCommon_pic] = useState('');
     const [grid, setGrid] = useState('');
     const [images, setImages] = useState([]);
+    const [leaders, setLeaders] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem('access_token') === null) {
@@ -19,6 +21,8 @@ const CommonPicture = () => {
                     setCommon_pic(data.common_pic);
                     setGrid(data.grid);
                     setImages(data.your_images);
+                    setLeaders(data.leaderboard);
+                    console.log(data.leaderboard)
                 } catch (e) {
                     console.log('not auth');
                 }
@@ -65,6 +69,7 @@ const CommonPicture = () => {
                     </div>
                 </div>
             </div>
+            <Leaderboard leaders={leaders}/>
             <Developer/>
         </div>
     );

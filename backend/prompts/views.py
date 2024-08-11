@@ -1,9 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import Count, Q
 from rest_framework.permissions import IsAuthenticated
 
 from prompts.models import Prompt, Style, Color
+from authentification.models import User
+from authentification.serializers import LeaderboardSerializer
 from prompts.serializers import PromptSerializer
 from prompts.tasks import generate_image
 from backendmusic import settings
@@ -94,11 +97,18 @@ class CommonPicView(APIView):
         if user.is_authenticated:
             your_images = Prompt.objects.filter(created_by=request.user)
         print(your_images)
+        leaderboard = User.objects.annotate(
+            prompt_count=Count('prompt__id', filter=Q(prompt__is_approved=True))
+        ).filter(
+            prompt_count__gt=1  # Only include users with more than one approved prompt
+        ).order_by('-prompt_count')
+        leaderboard_ser = LeaderboardSerializer(leaderboard, many=True)
         return Response(
             {
                 'common_pic': common_picture,
                 'grid': grid,
-                'your_images': PromptSerializer(your_images, many=True).data
+                'your_images': PromptSerializer(your_images, many=True).data,
+                'leaderboard': leaderboard_ser.data
             },
             status=status.HTTP_200_OK
         )

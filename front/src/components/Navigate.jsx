@@ -13,7 +13,7 @@ const Navigate = () => {
   <>
 
       <div class="navbar">
-      <Link to="/pic" className='nav-item'>Pic</Link>
+      <Link to="/pic" className='nav-item'>Result</Link>
       <Link to="/"><img src={logo} alt="logo" className="logo nav-item" /></Link>
         {isAuth ? <Link to="/logout" className='nav-item'>Logout</Link> : <Link to="/login" className='nav-item'>Login</Link>}          
       </div>
