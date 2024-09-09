@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
-    'prompts'
+    'drf_yasg',
+    'main'
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [
@@ -200,6 +200,6 @@ MEDIA_ROOT = 'backend/media'
 CORS_ALLOW_ALL_ORIGINS = True
 
 if DEBUG:
-    BASE_URL = 'http://62.113.100.157:8000/'
+    BASE_URL = 'http://127.0.0.1:8000/'
 else:
-    BASE_URL = 'http://62.113.100.157:8000/'
+    BASE_URL = 'https://educ_test_task/'

@@ -5,12 +5,9 @@ djangorestframework-simplejwt==5.3.0
 setuptools==71.1.0
 psycopg2==2.9.9
 eventlet
-celery
 redis
 pillow
-numpy
-scipy
 python-dotenv
 requests
-joblib
-nltk==3.8.1
+django-phonenumber-field[phonenumbers]
+drf-yasg==1.21.7

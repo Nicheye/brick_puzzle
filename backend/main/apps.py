@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PromptsConfig(AppConfig):
+class MainConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'prompts'
+    name = 'main'

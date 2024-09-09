@@ -24,19 +24,6 @@ services:
   redis:
     image: redis
 
-  celery:
-    restart: always
-    build:
-      context: .
-      dockerfile: backend/DockerFile.python
-    command: >
-      sh -c "celery -A prompts beat --loglevel=info &&
-             celery -A prompts worker --loglevel=info -P eventlet"
-    volumes:
-      - ./backend:/app/backend
-    depends_on:
-      - backend
-      - redis
   
   db:
     image: postgres
@@ -46,14 +33,3 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
-
-  frontend:
-    build:
-      context: .
-      dockerfile: front/Dockerfile.node
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./front:/app/front
-    depends_on:
-      - backend
